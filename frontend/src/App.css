@@ -1,0 +1,78 @@
+/* need to enhance */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f9ff;
+  color: #2f3e4e;
+}
+
+.app-main {
+  padding: 30px 20px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #dbeafe;
+  padding: 15px 25px;
+  border-bottom: 1px solid #c7ddf7;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #2b4c7e;
+  font-weight: 500;
+  margin-right: 15px;
+}
+
+.page-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.auth-card {
+  background-color: #eaf4ff;
+  border: 1px solid #d2e6fa;
+  border-radius: 14px;
+  padding: 30px 25px;
+  text-align: left;
+}
+
+.auth-card h1 {
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-form label {
+  font-weight: 600;
+}
+
+.auth-form input {
+  padding: 10px 12px;
+  border: 1px solid #bfd8f2;
+  border-radius: 8px;
+}
+
+.auth-btn {
+  margin-top: 10px;
+  background-color: #b9dcff;
+  color: #1f3f60;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.error-text {
+  color: #c94f4f;
+  font-size: 14px;
+  margin: 0;
+}
