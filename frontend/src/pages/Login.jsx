@@ -1,6 +1,5 @@
-// need to enhance
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
@@ -28,7 +27,7 @@ export default function Login() {
 
     try {
       await login(formData.email, formData.password);
-      navigate("/");
+      navigate("/profile");
     } catch (err) {
       setError(err.message || "Login failed.");
     }
@@ -65,6 +64,10 @@ export default function Login() {
             Login
           </button>
         </form>
+
+        <p className="auth-switch">
+          Don’t have an account? <Link to="/register">Register</Link>
+        </p>
       </div>
     </div>
   );
