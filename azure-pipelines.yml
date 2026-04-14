@@ -82,6 +82,8 @@ stages:
       runOnce:
         deploy:
           steps:
+          -download: none
+          
           - task: DownloadBuildArtifacts@0
             inputs:
               buildType: 'current'
@@ -107,6 +109,8 @@ stages:
       runOnce:
         deploy:
           steps:
+          -download: none
+          
           - task: DownloadBuildArtifacts@0
             inputs:
               buildType: 'current'
@@ -131,6 +135,8 @@ stages:
       runOnce:
         deploy:
           steps:
+          -download: none
+          
           - task: DownloadBuildArtifacts@0
             inputs:
               buildType: 'current'
@@ -155,6 +161,8 @@ stages:
       runOnce:
         deploy:
           steps:
+          -download: none
+          
           - task: DownloadBuildArtifacts@0
             inputs:
               buildType: 'current'
