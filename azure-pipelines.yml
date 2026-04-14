@@ -82,7 +82,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          -download: none
+          - download: none
           
           - task: DownloadBuildArtifacts@0
             inputs:
@@ -109,7 +109,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          -download: none
+          - download: none
           
           - task: DownloadBuildArtifacts@0
             inputs:
@@ -135,7 +135,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          -download: none
+          - download: none
           
           - task: DownloadBuildArtifacts@0
             inputs:
@@ -161,7 +161,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          -download: none
+          - download: none
           
           - task: DownloadBuildArtifacts@0
             inputs:
