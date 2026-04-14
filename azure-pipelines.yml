@@ -1,0 +1,136 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build and Test
+  jobs:
+  - job: BuildJob
+    displayName: Build Job
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '20.x'
+      displayName: Use Node.js
+
+    - script: |
+        cd frontend
+        npm install
+        npm run build
+        cd ../backend
+        npm install
+        npm run build
+      displayName: Build frontend and backend
+
+    - script: |
+        cd frontend
+        npm run test:coverage -- --watchAll=false
+        cd ../backend
+        npm run test:coverage
+      displayName: Run unit tests and generate coverage
+
+- stage: Deliver
+  displayName: Deliver Artifact
+  dependsOn: Build
+  jobs:
+  - job: DeliverJob
+    displayName: Deliver Job
+    steps:
+    - script: |
+        mkdir -p $(Build.ArtifactStagingDirectory)/release/frontend
+        mkdir -p $(Build.ArtifactStagingDirectory)/release/backend
+        cp -R frontend/build $(Build.ArtifactStagingDirectory)/release/frontend/
+        cp -R backend/src $(Build.ArtifactStagingDirectory)/release/backend/
+        cp backend/package.json $(Build.ArtifactStagingDirectory)/release/backend/
+      displayName: Prepare release artifact
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/release'
+        ArtifactName: 'app-release'
+        publishLocation: 'Container'
+      displayName: Publish artifact
+
+- stage: Deploy_Dev
+  displayName: Deploy to Dev
+  dependsOn: Deliver
+  jobs:
+  - job: DeployDevJob
+    displayName: Deploy Dev Job
+    steps:
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'app-release'
+        downloadPath: '$(System.ArtifactsDirectory)'
+      displayName: Download artifact
+
+    - script: |
+        echo "Deploying artifact to Dev environment"
+        ls -R $(System.ArtifactsDirectory)
+        echo "Launching deployed app in Dev environment (mock)"
+      displayName: Mock deploy and launch in Dev
+
+- stage: Deploy_QAT
+  displayName: Deploy to QAT
+  dependsOn: Deploy_Dev
+  jobs:
+  - job: DeployQATJob
+    displayName: Deploy QAT Job
+    steps:
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'app-release'
+        downloadPath: '$(System.ArtifactsDirectory)'
+      displayName: Download artifact
+
+    - script: |
+        echo "Deploying artifact to QAT environment"
+        ls -R $(System.ArtifactsDirectory)
+      displayName: Mock deploy to QAT
+
+- stage: Deploy_Staging
+  displayName: Deploy to Staging
+  dependsOn: Deploy_QAT
+  jobs:
+  - job: DeployStagingJob
+    displayName: Deploy Staging Job
+    steps:
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'app-release'
+        downloadPath: '$(System.ArtifactsDirectory)'
+      displayName: Download artifact
+
+    - script: |
+        echo "Deploying artifact to Staging environment"
+        ls -R $(System.ArtifactsDirectory)
+      displayName: Mock deploy to Staging
+
+- stage: Deploy_Production
+  displayName: Deploy to Production
+  dependsOn: Deploy_Staging
+  jobs:
+  - job: DeployProductionJob
+    displayName: Deploy Production Job
+    steps:
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'app-release'
+        downloadPath: '$(System.ArtifactsDirectory)'
+      displayName: Download artifact
+
+    - script: |
+        echo "Deploying artifact to Production environment"
+        ls -R $(System.ArtifactsDirectory)
+      displayName: Mock deploy to Production
