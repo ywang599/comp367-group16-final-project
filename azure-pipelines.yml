@@ -16,7 +16,7 @@ stages:
         version: '20.x'
       displayName: Use Node.js
 
-    - task: SonarCloudPrepare@3
+    - task: SonarCloudPrepare@4
       inputs:
         SonarCloud: 'SonarCloud'
         scannerMode: 'cli'
@@ -43,10 +43,10 @@ stages:
         npm run test:coverage
       displayName: Run unit tests and generate coverage
 
-    - task: SonarCloudAnalyze@3
+    - task: SonarCloudAnalyze@4
       displayName: Run SonarCloud analysis
 
-    - task: SonarCloudPublish@3
+    - task: SonarCloudPublish@4
       inputs:
         pollingTimeoutSec: '300'
       displayName: Publish SonarCloud quality gate result
