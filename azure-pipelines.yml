@@ -16,6 +16,17 @@ stages:
         version: '20.x'
       displayName: Use Node.js
 
+    - task: SonarCloudPrepare@3
+      inputs:
+        SonarCloud: 'SonarCloud'
+        scannerMode: 'cli'
+        configMode: 'manual'
+        organization: 'ywang599'
+        cliProjectKey: 'ywang599_comp367-group16-final-project'
+        cliProjectName: 'comp367-group16-final-project'
+        cliSources: '.'
+      displayName: Prepare SonarCloud analysis    
+
     - script: |
         cd frontend
         npm install
@@ -31,6 +42,14 @@ stages:
         cd ../backend
         npm run test:coverage
       displayName: Run unit tests and generate coverage
+
+    - task: SonarCloudAnalyze@3
+      displayName: Run SonarCloud analysis
+
+    - task: SonarCloudPublish@3
+      inputs:
+        pollingTimeoutSec: '300'
+      displayName: Publish SonarCloud quality gate result
 
     - script: |
         mkdir -p $(Build.ArtifactStagingDirectory)/build-output/frontend
